@@ -57,7 +57,7 @@ public class PeoplesListAdapter extends RecyclerView.Adapter<PeoplesListAdapter.
     }
 
     public interface SelectionListener {
-        void onItemSelected(int position);
+        void onItemSelected(View itemView, int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements IViewHolderBinder<ApiResponse.Results> {
@@ -101,14 +101,14 @@ public class PeoplesListAdapter extends RecyclerView.Adapter<PeoplesListAdapter.
         @OnClick(R.id.btnReject)
         void onBtnRejectClick() {
             if (selectionListener != null) {
-                selectionListener.onItemSelected(getLayoutPosition());
+                selectionListener.onItemSelected(itemView, getLayoutPosition());
             }
         }
 
         @OnClick(R.id.btnAccept)
         void onBtnAcceptClick() {
             if (selectionListener != null) {
-                selectionListener.onItemSelected(getLayoutPosition());
+                selectionListener.onItemSelected(itemView, getLayoutPosition());
             }
         }
     }

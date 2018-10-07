@@ -1,11 +1,15 @@
 package com.peoples.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.mvp.MessageType;
 import com.mvp.MvpActivity;
@@ -69,9 +73,18 @@ public class MainActivity extends MvpActivity<PeoplesPresenter, PeoplesView> imp
         peoplesListAdapter.setItemClick((adapter, viewHolder, position) -> {
             // on item click
         });
-        peoplesListAdapter.setSelectionListener(position -> {
-            results.remove(position);
-            peoplesListAdapter.notifyItemRemoved(position);
+        peoplesListAdapter.setSelectionListener((itemView, position) -> {
+            final ObjectAnimator objectAnimator = ObjectAnimator
+                    .ofFloat(itemView, View.TRANSLATION_X, 0, recyclerView.getWidth())
+                    .setDuration(500);
+            objectAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    results.remove(position);
+                    peoplesListAdapter.notifyItemRemoved(position);
+                }
+            });
+            objectAnimator.start();
         });
         recyclerView.setAdapter(peoplesListAdapter);
     }
