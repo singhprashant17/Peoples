@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,6 +83,15 @@ public class MainActivity extends MvpActivity<PeoplesPresenter, PeoplesView> imp
                 public void onAnimationEnd(Animator animation) {
                     results.remove(position);
                     peoplesListAdapter.notifyItemRemoved(position);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (itemView != null) {
+                                itemView.setTranslationX(0);
+                                itemView.setTranslationY(0);
+                            }
+                        }
+                    }, 1000);
                 }
             });
             objectAnimator.start();
